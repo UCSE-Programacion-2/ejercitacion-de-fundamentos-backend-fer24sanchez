@@ -1,0 +1,25 @@
+### Variables
+@baseUrl = http://localhost:3000
+
+### Obtener todas las frutas
+GET {{baseUrl}}/frutas
+
+### Obtener una fruta por ID existente
+GET {{baseUrl}}/frutas/1
+
+### Obtener una fruta por ID inexistente
+GET {{baseUrl}}/frutas/999
+
+### Buscar frutas por nombre (Query string)
+GET {{baseUrl}}/frutas/buscar?nombre=manzana
+
+### Crear una nueva fruta
+POST {{baseUrl}}/frutas
+Content-Type: application/json
+
+{
+    "imagen": "🍊",
+    "nombre": "Naranja",
+    "importe": 180,
+    "stock": 100
+}

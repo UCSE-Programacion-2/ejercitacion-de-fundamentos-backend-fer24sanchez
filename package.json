@@ -1,0 +1,21 @@
+{
+  "name": "ejercitacion-fundamentos-backend",
+  "version": "1.0.0",
+  "description": "Ejercitación de Fundamentos de Backend: Express, FS, Env",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file=.env server.js",
+    "dev": "node --watch --env-file=.env server.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=20.6.0"
+  }
+}

@@ -1,0 +1,61 @@
+name: "Setup Assignment Issues"
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: setup-issues-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  create_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Crear Issue - Endpoint GET /frutas
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE_1.md
+        continue-on-error: true
+
+      - name: Crear Issue - Endpoint GET /frutas/:id
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE_2.md
+        continue-on-error: true
+
+      - name: Crear Issue - Endpoint POST /frutas
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE_3.md
+        continue-on-error: true
+
+      - name: Crear Issue - Endpoint GET /frutas/buscar
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          update_existing: true
+          search_existing: all
+          filename: .github/ISSUE_TEMPLATE_4.md
+        continue-on-error: true

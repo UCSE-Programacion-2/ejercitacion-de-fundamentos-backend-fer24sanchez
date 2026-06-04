@@ -1,0 +1,80 @@
+name: GitHub Classroom Workflow
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: GET /frutas
+        id: test-get-all
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /frutas - Retorna todas las frutas'
+          setup-command: ''
+          command: 'npx jest -t "GET /frutas - Retorna todas las frutas"'
+          timeout: 10
+          max-score: 25
+
+      - name: GET /frutas/:id
+        id: test-get-id
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /frutas/:id - Retorna fruta por ID o 404'
+          setup-command: ''
+          command: 'npx jest -t "GET /frutas/:id - Retorna fruta por ID o 404"'
+          timeout: 10
+          max-score: 25
+
+      - name: GET /frutas/buscar
+        id: test-get-search
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'GET /frutas/buscar - Retorna frutas filtradas por query \?nombre='
+          setup-command: ''
+          command: 'npx jest -t "GET /frutas/buscar - Retorna frutas filtradas por query \?nombre="'
+          timeout: 10
+          max-score: 25
+
+      - name: POST /frutas
+        id: test-post
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: 'POST /frutas - Crea una nueva fruta y escribe en el FS'
+          setup-command: ''
+          command: 'npx jest -t "POST /frutas - Crea una nueva fruta y escribe en el FS"'
+          timeout: 10
+          max-score: 25
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST-GET-ALL_RESULTS: "${{steps.test-get-all.outputs.result}}"
+          TEST-GET-ID_RESULTS: "${{steps.test-get-id.outputs.result}}"
+          TEST-GET-SEARCH_RESULTS: "${{steps.test-get-search.outputs.result}}"
+          TEST-POST_RESULTS: "${{steps.test-post.outputs.result}}"
+        with:
+          runners: test-get-all,test-get-id,test-get-search,test-post
